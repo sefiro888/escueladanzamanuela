@@ -23,7 +23,7 @@ Web de demostración para la **Escuela de Danza Manuela**, escuela de baile fami
 - **Mega menú** en escritorio con vista previa de cada clase al pasar el ratón, y **menú móvil a pantalla completa** con mosaico de clases, además de barra de acciones fija (Clases · Horarios · WhatsApp · Llamar · Sedes).
 - **10 páginas de disciplina** (flamenco, ballet, funky, baile moderno, comercial, K-pop, salsa y salón, zumba, country y baile nupcial), cada una con: datos rápidos y medidor de energía, descripción, qué aprenderás, cómo es una sesión, para quién es, qué llevar, niveles, horario propio, opinión real, preguntas frecuentes, **reserva por WhatsApp con mensaje redactado** y carrusel de otros estilos.
 - **Test «¿Qué estilo va contigo?»**, filtro de clases por edad y energía, horario semanal con «Hoy» y «Próxima clase», galería con visor, opiniones reales de Google en carrusel, FAQ y mapas que solo se cargan si se pulsan.
-- Intro animada (una vez por sesión), transición entre páginas, cursor personalizado y botones magnéticos. Todo respeta «reducir movimiento».
+- Intro animada (una vez por sesión) y transición entre páginas. En móvil el scroll es nativo y estable: sin animaciones que desplacen el contenido. Todo respeta «reducir movimiento».
 
 ## Datos reales utilizados
 
