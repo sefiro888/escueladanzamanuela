@@ -11,7 +11,7 @@ import {
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..')
 const ALL = [...CLASSES, BODAS]
 const BY = Object.fromEntries(ALL.map(c => [c.slug, c]))
-const V = '20261005'
+const V = '20261005b'
 
 // ---------- utilidades ----------
 const esc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;')
