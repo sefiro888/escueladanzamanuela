@@ -57,7 +57,7 @@
   const onScroll = () => {
     const y = scrollY
     header.classList.toggle('is-scrolled', y > 40)
-    const hide = y > 500 && y > lastY && !document.body.classList.contains('lock')
+    const hide = innerWidth > 980 && y > 500 && y > lastY && !document.body.classList.contains('lock')
     header.classList.toggle('is-hidden', hide)
     root.classList.toggle('header-hidden', hide)
     lastY = y
@@ -129,7 +129,8 @@
       now.querySelector('span').textContent = s.dataset.tag
       now.classList.remove('swap'); void now.offsetWidth; now.classList.add('swap')
       count.textContent = String(i + 1).padStart(2, '0')
-      if (innerWidth < 980) dots[i].scrollIntoView({ block: 'nearest', inline: 'center', behavior: 'smooth' })
+      const rail = dots[i].parentElement
+      if (rail.scrollWidth > rail.clientWidth) rail.scrollTo({ left: dots[i].offsetLeft - (rail.clientWidth - dots[i].offsetWidth) / 2, behavior: 'smooth' })
       schedule()
     }
     const schedule = () => { clearTimeout(timer); if (!reduce) timer = setTimeout(() => go(i + 1), DUR) }
@@ -259,37 +260,31 @@
     $$('.levels__panel', l).forEach(p => p.classList.toggle('is-on', p.dataset.lv === b.dataset.lv))
   })))
 
-  /* ---------- carruseles (opiniones, otros estilos) ---------- */
+  /* ---------- carruseles (opiniones, otros estilos): desplazamiento nativo ---------- */
   $$('[data-slider]').forEach(sl => {
-    const track = $('.slider__track', sl), items = [...track.children]
+    const track = $('.slider__track', sl)
     const sec = sl.closest('section'), prev = $('[data-prev]', sec), next = $('[data-next]', sec), barI = $('.slider__bar i', sec)
-    let x = 0, auto
-    const pad = () => parseFloat(getComputedStyle(track).paddingLeft)
-    const max = () => Math.max(0, track.scrollWidth - sl.clientWidth)
-    const stepW = () => items[0].getBoundingClientRect().width + parseFloat(getComputedStyle(track).columnGap || 20)
-    const apply = (anim = true) => {
-      x = Math.max(0, Math.min(max(), x))
-      track.style.transition = anim ? '' : 'none'
-      track.style.transform = `translateX(${-x}px)`
-      if (barI) { const r = sl.clientWidth / track.scrollWidth; barI.style.width = (r * 100) + '%'; barI.style.transform = `translateX(${(max() ? x / max() : 0) * (1 / r - 1) * 100}%)` }
+    const stepW = () => track.children[0].getBoundingClientRect().width + 20
+    const max = () => sl.scrollWidth - sl.clientWidth
+    const move = d => sl.scrollBy({ left: d > 0 && sl.scrollLeft >= max() - 4 ? -sl.scrollLeft : d * stepW(), behavior: 'smooth' })
+    const bar = () => {
+      if (!barI) return
+      const r = sl.clientWidth / sl.scrollWidth
+      barI.style.width = (r * 100) + '%'
+      barI.style.transform = `translateX(${(max() ? sl.scrollLeft / max() : 0) * (1 / r - 1) * 100}%)`
     }
-    const move = d => { x = (d > 0 && x >= max() - 2) ? 0 : x + d * stepW(); apply() }
+    let auto
+    const stop = () => clearInterval(auto)
     prev && prev.addEventListener('click', () => { move(-1); stop() })
     next && next.addEventListener('click', () => { move(1); stop() })
-    let sx = null, sy = 0, x0 = 0, dragged = false
-    sl.addEventListener('pointerdown', e => { sx = e.clientX; sy = e.clientY; x0 = x; dragged = false; stop() })
-    addEventListener('pointermove', e => {
-      if (sx === null) return
-      const dx = e.clientX - sx
-      if (Math.abs(dx) > 6 && Math.abs(dx) > Math.abs(e.clientY - sy)) { dragged = true; x = x0 - dx; apply(false) }
-    })
-    addEventListener('pointerup', () => { if (sx === null) return; sx = null; if (dragged) { x = Math.round(x / stepW()) * stepW(); apply() } })
-    sl.addEventListener('click', e => { if (dragged) { e.preventDefault(); e.stopPropagation() } }, true)
-    sl.addEventListener('dragstart', e => e.preventDefault())
-    const stop = () => clearInterval(auto)
-    if (sec.classList.contains('reviews') && !reduce) auto = setInterval(() => move(1), 5000)
-    addEventListener('resize', () => apply(false))
-    apply(false)
+    sl.addEventListener('scroll', () => requestAnimationFrame(bar), { passive: true })
+    ;['pointerdown', 'touchstart', 'wheel'].forEach(ev => sl.addEventListener(ev, stop, { passive: true }))
+    // avance automático solo en escritorio y solo mientras se ve
+    if (sec.classList.contains('reviews') && !reduce && fine) {
+      new IntersectionObserver(([e]) => { stop(); if (e.isIntersecting) auto = setInterval(() => move(1), 5500) }, { threshold: .5 }).observe(sl)
+    }
+    addEventListener('resize', bar)
+    bar()
   })
 
   /* ---------- galería con visor ---------- */
@@ -325,7 +320,7 @@
       sub.forEach(a => {
         const on = a.getAttribute('href') === '#' + e.target.id
         a.classList.toggle('is-active', on)
-        if (on) a.scrollIntoView({ block: 'nearest', inline: 'center', behavior: 'smooth' })
+        if (on) { const bar = a.parentElement; bar.scrollTo({ left: a.offsetLeft - (bar.clientWidth - a.offsetWidth) / 2, behavior: 'smooth' }) }
       })
     }), { rootMargin: '-45% 0px -50% 0px' })
     sub.forEach(a => { const t = $(a.getAttribute('href')); t && so.observe(t) })
@@ -365,7 +360,7 @@
 
   /* ---------- parallax suave ---------- */
   const par = $$('.wedding__media img')
-  if (par.length && !reduce) {
+  if (par.length && !reduce && fine && innerWidth > 980) {
     const run = () => par.forEach(img => {
       const r = img.parentElement.getBoundingClientRect()
       if (r.bottom < 0 || r.top > innerHeight) return
@@ -374,24 +369,4 @@
     addEventListener('scroll', () => requestAnimationFrame(run), { passive: true }); run()
   }
 
-  /* ---------- botones magnéticos y cursor ---------- */
-  if (fine && !reduce) {
-    $$('.magnetic').forEach(b => {
-      b.addEventListener('mousemove', e => {
-        const r = b.getBoundingClientRect()
-        b.style.transform = `translate(${(e.clientX - r.left - r.width / 2) * .18}px, ${(e.clientY - r.top - r.height / 2) * .28}px)`
-      })
-      b.addEventListener('mouseleave', () => { b.style.transform = '' })
-    })
-    const cur = $('.cursor')
-    if (cur) {
-      root.classList.add('has-cursor')
-      let cx = innerWidth / 2, cy = innerHeight / 2, tx = cx, ty = cy
-      cur.style.opacity = '0'
-      addEventListener('mousemove', e => { tx = e.clientX; ty = e.clientY; cur.style.opacity = '1' })
-      const loop = () => { cx += (tx - cx) * .2; cy += (ty - cy) * .2; cur.style.transform = `translate(${cx}px, ${cy}px)`; requestAnimationFrame(loop) }
-      loop()
-      document.addEventListener('mouseover', e => cur.classList.toggle('is-hover', !!e.target.closest('a, button, summary, [data-lb], input, select, textarea')))
-    }
-  }
 })()

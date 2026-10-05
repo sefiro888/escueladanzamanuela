@@ -152,7 +152,7 @@ ${announce()}
     </nav>
     <div class="site-header__actions">
       <a class="tel-pill" href="tel:${SITE.phoneIntl}">${I.phone}<span>${SITE.phone}</span></a>
-      <a class="btn btn--rose btn--sm magnetic" href="${wa('¡Hola, Manuela! Me gustaría reservar una clase de prueba. ¿Qué disponibilidad tenéis?')}" target="_blank" rel="noopener">Reserva tu clase</a>
+      <a class="btn btn--rose btn--sm" href="${wa('¡Hola, Manuela! Me gustaría reservar una clase de prueba. ¿Qué disponibilidad tenéis?')}" target="_blank" rel="noopener">Reserva tu clase</a>
       <button class="burger" aria-expanded="false" aria-controls="drawer" aria-label="Abrir menú"><span></span><span></span><span></span></button>
     </div>
   </div>
@@ -195,7 +195,7 @@ function footer() {
   <div class="wrap">
     <div class="footer__sign">
       <p class="footer__slogan">Baila con el <em>corazón</em>,<br> los pies te seguirán.</p>
-      <a class="btn btn--rose btn--lg magnetic" href="${wa('¡Hola, Manuela! Quiero empezar a bailar. ¿Me contáis cómo funciona?')}" target="_blank" rel="noopener">${I.wa} Empieza a bailar</a>
+      <a class="btn btn--rose btn--lg" href="${wa('¡Hola, Manuela! Quiero empezar a bailar. ¿Me contáis cómo funciona?')}" target="_blank" rel="noopener">${I.wa} Empieza a bailar</a>
     </div>
     <div class="footer__grid">
       <div class="footer__brand">
@@ -234,7 +234,7 @@ function footer() {
     </div>
   </div>
 </footer>
-<a class="fab-wa magnetic" href="${wa('¡Hola, Manuela! Me gustaría información sobre las clases.')}" target="_blank" rel="noopener" aria-label="Escribir por WhatsApp">${I.wa}<span>¿Hablamos?</span></a>
+<a class="fab-wa" href="${wa('¡Hola, Manuela! Me gustaría información sobre las clases.')}" target="_blank" rel="noopener" aria-label="Escribir por WhatsApp">${I.wa}<span>¿Hablamos?</span></a>
 <nav class="actionbar" aria-label="Acciones rápidas">
   <a href="index.html#clases">${I.spark}<span>Clases</span></a>
   <a href="horarios.html">${I.clock}<span>Horarios</span></a>
@@ -260,8 +260,7 @@ function intro() {
     <span class="intro__bar"><i></i></span>
   </div>
 </div>
-<div class="curtain" aria-hidden="true"><img src="assets/img/bailarina.png" alt=""></div>
-<div class="cursor" aria-hidden="true"><i></i></div>`
+<div class="curtain" aria-hidden="true"><img src="assets/img/bailarina.png" alt=""></div>`
 }
 
 function page(p, body) {
@@ -459,8 +458,8 @@ function home() {
       <h1 class="hero__title"><span class="line"><span>Baila con el</span></span> <span class="line"><em>corazón,</em></span> <span class="line line--sm"><span>los pies te seguirán.</span></span></h1>
       <div class="hero__now" aria-live="polite"><span class="hero__label">Ahora suena</span><a class="hero__class" href="flamenco.html"><strong>Flamenco</strong><span>${esc(CLASSES[0].tagline)}</span></a></div>
       <div class="hero__cta">
-        <a class="btn btn--rose btn--lg magnetic" href="#clases">Descubre las clases ${I.arrow}</a>
-        <a class="btn btn--glass btn--lg magnetic" href="${wa('¡Hola, Manuela! Me gustaría reservar una clase de prueba.')}" target="_blank" rel="noopener">${I.wa} Clase de prueba</a>
+        <a class="btn btn--rose btn--lg" href="#clases">Descubre las clases ${I.arrow}</a>
+        <a class="btn btn--glass btn--lg" href="${wa('¡Hola, Manuela! Me gustaría reservar una clase de prueba.')}" target="_blank" rel="noopener">${I.wa} Clase de prueba</a>
       </div>
       <a class="hero__rating" href="#opiniones">${stars(5)}<span><strong>${SITE.rating}</strong> · ${SITE.reviewCount} reseñas en Google</span></a>
     </div>
@@ -537,7 +536,7 @@ function home() {
       <blockquote class="wedding__quote reveal">«En 10 clases nos montó el baile nupcial y fue maravilloso. Coreografía preciosa y encima, muchísimas facilidades para cuadrar horarios.»<cite>Andrea Jiménez · Google</cite></blockquote>
       <ol class="wedding__steps reveal">${BODAS.steps.slice(0, 4).map(([n, t]) => `<li><b>${n}</b>${t}</li>`).join('')}</ol>
       <div class="btn-row reveal">
-        <a class="btn btn--rose magnetic" href="${href(BODAS.slug)}">Ver baile nupcial ${I.arrow}</a>
+        <a class="btn btn--rose" href="${href(BODAS.slug)}">Ver baile nupcial ${I.arrow}</a>
         <a class="btn btn--ghost" href="${wa('¡Hola, Manuela! Nos casamos y nos gustaría preparar nuestro baile nupcial.')}" target="_blank" rel="noopener">${I.wa} Pedir cita</a>
       </div>
     </div>
@@ -630,7 +629,7 @@ function classPage(c) {
         <div class="fact fact--energy"><span><small>Energía</small>${energy(c.energy)}</span></div>
       </div>
       <div class="hero__cta">
-        <a class="btn btn--rose btn--lg magnetic" href="#reserva">${isBoda ? 'Pedir cita' : 'Reservar clase de prueba'} ${I.arrow}</a>
+        <a class="btn btn--rose btn--lg" href="#reserva">${isBoda ? 'Pedir cita' : 'Reservar clase de prueba'} ${I.arrow}</a>
         <a class="btn btn--glass btn--lg" href="${wa(msg)}" target="_blank" rel="noopener">${I.wa} WhatsApp directo</a>
       </div>
     </div>
